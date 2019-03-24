@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Sensor Readings</string>
+    <string name="button_start">Start</string>
+    <string name="button_stop">Stop</string>
+    <string name="accelometer">Accelerometer Sensor Readings</string>
+    <string name="proximity">Proximity Sensor Readings</string>
+    <string name="light">Light Readings</string>
+    <string name="gyro">Gyroscope Sensor Readings</string>
+    <string name="gravity">Gravity Sensor Readings</string>
+</resources>

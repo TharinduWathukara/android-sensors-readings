@@ -68,26 +68,26 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onSensorChanged(SensorEvent event) {
         if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
-            acceloX.setText(""+event.values[0]);
-            acceloY.setText(""+event.values[1]);
-            acceloZ.setText(""+event.values[2]);
+            acceloX.setText(""+event.values[0]+ " m/s2");
+            acceloY.setText(""+event.values[1]+ " m/s2");
+            acceloZ.setText(""+event.values[2]+ " m/s2");
         }
         else if( event.sensor.getType() == Sensor.TYPE_PROXIMITY){
-            proximity.setText(""+event.values[0]);
+            proximity.setText(""+event.values[0]+" cm");
         }
         else if( event.sensor.getType() == Sensor.TYPE_LIGHT){
-            light.setText(""+event.values[0]);
+            light.setText(""+event.values[0]+" lx");
             progressBarLight.setProgress((event.values[0]/35000 * 100) > 100 ? 100 : (int)(event.values[0]/35000 * 100));
         }
         else if( event.sensor.getType() == Sensor.TYPE_GYROSCOPE){
-            gyroX.setText(""+event.values[0]);
-            gyroY.setText(""+event.values[1]);
-            gyroZ.setText(""+event.values[2]);
+            gyroX.setText(""+event.values[0]+" rad/s");
+            gyroY.setText(""+event.values[1]+" rad/s");
+            gyroZ.setText(""+event.values[2]+" rad/s");
         }
         else if( event.sensor.getType() == Sensor.TYPE_GRAVITY){
-            gravityX.setText(""+event.values[0]);
-            gravityY.setText(""+event.values[1]);
-            gravityZ.setText(""+event.values[2]);
+            gravityX.setText(""+event.values[0]+ " m/s2");
+            gravityY.setText(""+event.values[1]+ " m/s2");
+            gravityZ.setText(""+event.values[2]+ " m/s2");
         }
     }
 

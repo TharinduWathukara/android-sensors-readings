@@ -10,6 +10,7 @@ import android.hardware.SensorEventListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -17,9 +18,11 @@ import org.w3c.dom.Text;
 public class MainActivity extends AppCompatActivity implements SensorEventListener, OnClickListener {
 
     private TextView acceloX, acceloY, acceloZ, proximity, light, gyroX, gyroY, gyroZ, gravityX, gravityY, gravityZ;
-    private Button bStart, bStop;
+    private Button bStartStop;
     private Sensor accelometer, proximitySensor, lightSensor, gyroscopeSensor, gravitySensor;
     private SensorManager sensorManager;
+    private boolean running = false;
+    private ProgressBar progressBarLight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +42,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         proximity = (TextView)findViewById(R.id.txtProximity);
 
-//        temp sensor (ambient temperature sensor)
+//        light sensor
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         light = (TextView)findViewById(R.id.txtLight);
+        progressBarLight = (ProgressBar)findViewById(R.id.progressBarLight);
 
 //        gyroscope sensor readings
         gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
@@ -56,11 +60,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         gravityZ = (TextView)findViewById(R.id.txtGravityZ);
 
 //        button click event
-        bStart = (Button)findViewById(R.id.btnStart);
-        bStop = (Button)findViewById(R.id.btnStop);
-
-        bStart.setOnClickListener(this);
-        bStop.setOnClickListener(this);
+        bStartStop = (Button)findViewById(R.id.btnStartStop);
+        bStartStop.setOnClickListener(this);
+        bStartStop.setText("Start");
     }
 
     @Override
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
         else if( event.sensor.getType() == Sensor.TYPE_LIGHT){
             light.setText(""+event.values[0]);
+            progressBarLight.setProgress((event.values[0]/35000 * 100) > 100 ? 100 : (int)(event.values[0]/35000 * 100));
         }
         else if( event.sensor.getType() == Sensor.TYPE_GYROSCOPE){
             gyroX.setText(""+event.values[0]);
@@ -90,17 +93,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case  R.id.btnStart:
-                sensorManager.registerListener(this,accelometer, SensorManager.SENSOR_DELAY_NORMAL);
-                sensorManager.registerListener(this,proximitySensor,SensorManager.SENSOR_DELAY_NORMAL);
-                sensorManager.registerListener(this,lightSensor,SensorManager.SENSOR_DELAY_NORMAL);
-                sensorManager.registerListener(this,gyroscopeSensor,SensorManager.SENSOR_DELAY_NORMAL);
-                sensorManager.registerListener(this,gravitySensor,SensorManager.SENSOR_DELAY_NORMAL);
-                break;
-            case R.id.btnStop:
-                sensorManager.unregisterListener(this);
-                break;
+        if(running == false){
+            running = true;
+            bStartStop.setText("Stop");
+            sensorManager.registerListener(this,accelometer, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(this,proximitySensor,SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(this,lightSensor,SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(this,gyroscopeSensor,SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(this,gravitySensor,SensorManager.SENSOR_DELAY_NORMAL);
+        }
+        else{
+            running = false;
+            bStartStop.setText("Start");
+            sensorManager.unregisterListener(this);
         }
     }
 

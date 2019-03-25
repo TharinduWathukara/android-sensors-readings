@@ -80,7 +80,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             gyroX.setText(""+event.values[0]);
             gyroY.setText(""+event.values[1]);
             gyroZ.setText(""+event.values[2]);
-        }else if( event.sensor.getType() == Sensor.TYPE_GRAVITY){
+        }
+        else if( event.sensor.getType() == Sensor.TYPE_GRAVITY){
             gravityX.setText(""+event.values[0]);
             gravityY.setText(""+event.values[1]);
             gravityZ.setText(""+event.values[2]);
